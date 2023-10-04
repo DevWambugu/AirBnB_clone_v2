@@ -52,10 +52,6 @@ sudo ln -s "$SOURCE" "$TARGET"
 # Give ownership of the folder and its contents to the ubuntu user and group
 sudo chown -R ubuntu:ubuntu "$FOLDER_PATH"
 
-# Define the desired URL and path to the HTML file
-URL="https://ndonga.tech/hbnb_static"
-HTML_FILE="/data/web_static/releases/test/index.html"
-
 # Modify the Nginx configuration using sed
 sudo sed -i "/location \/ {/a \\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}" /etc/nginx/sites-available/default
 
