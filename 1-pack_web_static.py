@@ -6,6 +6,7 @@ import os
 from fabric.api import local
 from datetime import datetime
 
+
 def do_pack():
     '''this function generates a .tgz achive for
     webstatic contents'''
