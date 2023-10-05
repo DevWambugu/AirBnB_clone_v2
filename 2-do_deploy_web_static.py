@@ -7,9 +7,10 @@ using the function do_deploy
 from fabric.api import run
 from fabric.api import env
 from fabric.api import put
+from fabric.api import sudo
 import os
 
-env.hosts = [52.86.88.220, 54.237.54.125]
+env.hosts = ['52.86.88.220', '54.237.54.125']
 env.user = 'ubuntu'
 env.key_file_name = "~/.ssh/school"
 
