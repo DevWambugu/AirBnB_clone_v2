@@ -13,6 +13,21 @@ env.hosts = [52.86.88.220, 54.237.54.125]
 env.user = 'ubuntu'
 env.key_file_name = "~/.ssh/school"
 
+def do_pack():
+    '''this function generates a .tgz achive for
+    webstatic contents'''
+    current_time_date = datetime.now()
+    timestamp = current_time_date.strftime("%Y%m%d%H%M%S")
+    archive_filename = "web_static_{}.tgz".format(timestamp)
+    archive_path = "versions/{}".format(archive_filename)
+
+    if not os.path.exists("versions"):
+        os.makedirs("versions")
+    result = local("tar -cvzf {} web_static".format(archive_path))
+    if result.succeeded:
+        return archive_path
+    else:
+        return None
 
 def do_deploy(archive_path):
     '''Distribute an archice to your serveers
@@ -41,3 +56,19 @@ def do_deploy(archive_path):
 
     '''return True if successful'''
     return True
+
+def do_pack():
+    '''this function generates a .tgz achive for
+    webstatic contents'''
+    current_time_date = datetime.now()
+    timestamp = current_time_date.strftime("%Y%m%d%H%M%S")
+    archive_filename = "web_static_{}.tgz".format(timestamp)
+    archive_path = "versions/{}".format(archive_filename)
+
+    if not os.path.exists("versions"):
+        os.makedirs("versions")
+    result = local("tar -cvzf {} web_static".format(archive_path))
+    if result.succeeded:
+        return archive_path
+    else:
+        return None
