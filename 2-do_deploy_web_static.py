@@ -47,15 +47,15 @@ def do_deploy(archive_path):
     put(archive_path, remote_archive_path)
 
     '''uncompress the file into the destination folder'''
-    run("mkdir -p {}".format(remote_release_dir))
-    run("tar -xzf {} -C {}".format(remote_archive_path, remote_release_dir))
+    sudo("mkdir -p {}".format(remote_release_dir))
+    sudo("tar -xzf {} -C {}".format(remote_archive_path, remote_release_dir))
 
     '''remove the archive from the webserver temporary files'''
-    run("rm {}".format(remote_archive_path))
+    sudo("rm {}".format(remote_archive_path))
 
     '''Delete and create a new symbolic link on the server'''
-    run("rm -f /data/web_static/current")
-    run("ln -s {} /data/web_static/current".format(remote_release_dir))
+    sudo("rm -rf /data/web_static/current")
+    sudo("ln -s {} /data/web_static/current".format(remote_release_dir))
 
     '''return True if successful'''
     return True
