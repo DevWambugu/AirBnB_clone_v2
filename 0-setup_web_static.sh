@@ -12,21 +12,11 @@ FOLDER_PATH3="/data/web_static/releases/"
 FOLDER_PATH4="/data/web_static/shared/"
 FOLDER_PATH5="/data/web_static/releases/test/"
 
-if [ -x "$(command -v "$FOLDER_PATH2")" ]; then
-    sudo mkdir -p "$FOLDER_PATH2"
-fi
-
-if [ -x "$(command -v "$FOLDER_PATH3")" ]; then
-	    sudo mkdir -p "$FOLDER_PATH3"
-fi
-
-if [ -x "$(command -v "$FOLDER_PATH4")" ]; then
-	    sudo mkdir -p "$FOLDER_PATH4"
-fi
-
-if [ -x "$(command -v "$FOLDER_PATH5")" ]; then
-	    sudo mkdir -p "$FOLDER_PATH5"
-fi
+for folder in "$FOLDER_PATH" "$FOLDER_PATH2" "$FOLDER_PATH3" "$FOLDER_PATH4" "$FOLDER_PATH5"; do
+    if [ ! -d "$folder" ]; then
+            mkdir -p "$folder"
+    fi
+done
 
 # Create a fake HTML file
 echo "
@@ -44,19 +34,25 @@ SOURCE="/data/web_static/releases/test/"
 TARGET="/data/web_static/current"
 # Check if the symbolic link already exists and delete it if so
 if [ -L "$TARGET" ]; then
-    sudo rm "$TARGET"
+    sudo rm -rf "$TARGET"
 fi
+
+# create target if it does not already exist
+sudo mkdir -p "$TARGET"
+
 # Create the symbolic link
+sudo rm -rf "$TARGET/test"
 sudo ln -s "$SOURCE" "$TARGET"
 
 # Give ownership of the folder and its contents to the ubuntu user and group
 sudo chown -R ubuntu:ubuntu "$FOLDER_PATH"
 
-# Modify the Nginx configuration using sed
-sudo sed -i "/location \/ {/a \\\tlocation /hbnb_static/ {\n\t\talias /data/web_static/current/;\n\t}" /etc/nginx/sites-available/default
+loc_header="location \/hbnb\_static\/ {"
+loc_content="alias \/data\/web\_static\/current\/;"
+new_location="\n\t$loc_header\n\t\t$loc_content\n\t}\n"
 
-# Test Nginx configuration
-sudo nginx -t
+# Use sed to insert the location block inside the server block
+sed -i "37s/$/$new_location/" /etc/nginx/sites-available/default
 
 # restart ngix
 sudo systemctl restart nginx
