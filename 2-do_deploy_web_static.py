@@ -42,20 +42,20 @@ def do_deploy(archive_path):
     archive_filename = os.path.basename(archive_path)
     archive_no_ext = os.path.splitext(archive_filename)[0]
     remote_archive_path = "/tmp/{}".format(archive_filename)
-    remote_release_dir = "/data/web_static/releases/{}/".format(archive_no_ext)
+    remote_release_dir = "/data/web_static/releases/{}".format(archive_no_ext)
     '''upload the compressed file to he remote server'''
     put(archive_path, remote_archive_path)
 
     '''uncompress the file into the destination folder'''
-    sudo("mkdir -p {}".format(remote_release_dir))
-    sudo("tar -xzf {} -C {}".format(remote_archive_path, remote_release_dir))
+    run("mkdir -p {}".format(remote_release_dir))
+    run("tar -xzf {} -C {}".format(remote_archive_path, remote_release_dir))
 
     '''remove the archive from the webserver temporary files'''
-    sudo("rm {}".format(remote_archive_path))
+    run("rm {}".format(remote_archive_path))
 
     '''Delete and create a new symbolic link on the server'''
-    sudo("rm -rf /data/web_static/current")
-    sudo("ln -s {} /data/web_static/current".format(remote_release_dir))
+    run("rm -rf /data/web_static/current")
+    run("ln -s -f {}/* /data/web_static/current".format(remote_release_dir))
 
     '''return True if successful'''
     return True
