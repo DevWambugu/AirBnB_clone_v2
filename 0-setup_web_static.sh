@@ -52,7 +52,7 @@ loc_content="alias \/data\/web\_static\/current\/;"
 new_location="\n\t$loc_header\n\t\t$loc_content\n\t}\n"
 
 # Use sed to insert the location block inside the server block
-sed -i "37s/$/$new_location/" /etc/nginx/sites-available/default
+sudo sed -i "37s/$/$new_location/" /etc/nginx/sites-available/default
 
 # restart ngix
-sudo systemctl restart nginx
+sudo service nginx restart
