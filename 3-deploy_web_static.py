@@ -24,13 +24,12 @@ def do_pack():
     archive_filename = "web_static_{}.tgz".format(timestamp)
     archive_path = "versions/{}".format(archive_filename)
 
-    if not os.path.exists("versions"):
-        os.makedirs("versions")
-    result = local("tar -cvzf {} web_static".format(archive_path))
-    if result.succeeded:
-        return archive_path
-    else:
+    try:
+        local("mkdir -p ./versions")
+        local("tar --create --verbose -z --file={} ./web_static".format(archive_filename)
+    except:
         return None
+    return os.path.join("versions", archive_filename)
 
 
 def do_deploy(archive_path):
