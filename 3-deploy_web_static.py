@@ -26,8 +26,9 @@ def do_pack():
 
     try:
         local("mkdir -p ./versions")
-        local("tar --create --verbose -z --file={} ./web_static".format(archive_filename)
-    except:
+        local("tar --create --verbose -z --file={} ./web_static"
+              .format(archive_filename))
+    except Exception:
         return None
     return os.path.join("versions", archive_filename)
 
