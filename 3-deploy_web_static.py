@@ -67,14 +67,3 @@ def deploy():
     if func is None:
         return False
     return do_deploy(func)
-
-
-def create_local_version(c):
-    timestamp = datetime.datetime.now().strftime('%Y%m%d%H%M%S')
-    local_version_dir = f'web_static_{timestamp}'
-    local_archive_name = f'{local_version_dir}.tar.gz'
-
-    os.mkdir(local_version_dir)
-    shutil.copy('my_index.html',
-                os.path.join(local_version_dir, 'my_index.html'))
-    os.system(f'tar -czvf {local_archive_name} {local_version_dir}')
