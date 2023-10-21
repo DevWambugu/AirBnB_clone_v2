@@ -28,7 +28,7 @@ def c_text(text):
     return "C " + formatted_text
 
 
-@app.route('/c/<text>', strict_slashes=False)
+@app.route('/python/<text>', strict_slashes=False)
 def python_text(text="is_cool"):
     '''display “Python ”, followed by the value of the text variable'''
     formatted_text = text.replace("_", " ")
