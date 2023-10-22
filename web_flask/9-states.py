@@ -24,6 +24,25 @@ def cities_by_states():
                            state_cities=cities)
 
 
+@app.route("/states", strict_slashes=False)
+def states():
+    '''displays with the list of all State objects
+    present in DBStorage sorted by name (A->Z)
+    '''
+    states = storage.all(State).values()
+    return render_template("9-states.html", state=states)
+
+
+@app.route("/states/<id>", strict_slashes=False)
+def states_id(id):
+    '''finds state with the ID'''
+    for state in storage.all(State).values():
+        if state.id == id:
+            return render_template("9-states.html",
+                                   state=state, state_cities=state.cities)
+        return render_template('9-states.html', not_found=True)
+
+
 @app.teardown_appcontext
 def teardown(exc):
     '''remove the current SQLAlchemy Session'''
