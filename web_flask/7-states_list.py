@@ -21,7 +21,7 @@ def close_db(exc):
 @app.route('/states_list', strict_slashes=False)
 def states_list():
     '''fetches dat from storage and displays as a HTML page'''
-    states = storage.all(State)
+    states = storage.all(State).values()
     return render_template('7-states_list.html', states=states)
 
 
